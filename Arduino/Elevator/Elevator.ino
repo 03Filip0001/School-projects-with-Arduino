@@ -40,7 +40,7 @@ bool floor3 = false;
 bool floor4 = false;
 
 int Floor = 0;
-int travel = 2;
+int travel = 2000;
 int next;
 
 bool clicked[5];
@@ -56,9 +56,9 @@ int number;
 
 void setup() {
   Serial.begin(9600);
-  
+
   for (i = 0; i < 5; i++) {
-    row[i] = NULL;
+    row[i] = -1;
   }
 
   pinMode(LED1, OUTPUT);
@@ -129,48 +129,52 @@ void loop() {
   ledsOn();
   next = row[0];
 
-  if (up) {
-    if (clicked[0] || clicked[1] || clicked[2] || clicked[3] || clicked[4]) {
-      if (!get_time) {
+  if (next != -1) {
+    if (up) {
+      if (clicked[0] || clicked[1] || clicked[2] || clicked[3] || clicked[4]) {
+        if (!get_time) {
+          time = millis();
+          get_time = true;
+        }
+      }
+      if (millis() - time > travel) {
+        Floor++;
         time = millis();
-        get_time = true;
+        if (Floor == next) {
+          clicked[Floor] = false;
+          Move();
+          next = row[0];
+        }
       }
     }
-    if (millis() - time > travel) {
-      Floor++;
-      if (Floor == next) {
-        digitalWrite(LEDS[Floor], LOW);
-        Move();
-        next = row[0];
+
+    if (!up) {
+      if (clicked[0] || clicked[1] || clicked[2] || clicked[3] || clicked[4]) {
+        if (!get_time) {
+          time = millis();
+          get_time = true;
+        }
+      }
+      if (millis() - time > travel) {
+        Floor--;
+        time = millis();
+        if (Floor == next) {
+          clicked[Floor] = false;
+          Move();
+          next = row[0];
+        }
       }
     }
   }
-
-  if (!up) {
-    if (clicked[0] || clicked[1] || clicked[2] || clicked[3] || clicked[4]) {
-      if (!get_time) {
-        time = millis();
-        get_time = true;
-      }
-    }
-    if (millis() - time > travel) {
-      Floor--;
-      if (Floor == next) {
-        digitalWrite(LEDS[Floor], LOW);
-        Move();
-        next = row[0];
-      }
-    }
-  }
-
+  
   if (!clicked[0] && !clicked[1] && !clicked[2] && !clicked[3] && !clicked[4]) {
     get_time = false;
   }
 
-  if (next > Floor) up = true;
+  if (next < Floor) up = true;
   else up = false;
 
-  number = row[1] * 100 + row[0] * 10 + Floor;
+  number = Floor;
   sevseg.setNumber(number, 0);
   for (i = 0; i < 50; i++) {
     sevseg.refreshDisplay();
