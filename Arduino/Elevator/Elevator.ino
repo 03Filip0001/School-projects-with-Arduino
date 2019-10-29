@@ -14,6 +14,7 @@ int LEDS[] = {LED1, LED2, LED3, LED4, LED5};
 #define BTN_3 4
 #define BTN_4 3
 #define BTN_5 2
+#define BTN_6 A6
 
 Bounce btn1 = Bounce();
 Bounce btn2 = Bounce();
@@ -23,13 +24,13 @@ Bounce btn5 = Bounce();
 
 SevSeg sevseg;
 
-byte numDigits = 3;
+byte numDigits = 1;
 byte digitPins[] = {14, 15, 16};
 byte segmentPins[] = {17, 18, 19, 1, 0, 12, 13};
 bool resistorsOnSegments = true;
 bool updateDelays = false;
 bool leading = false;
-byte hardwareConfig = COMMON_ANODE;
+byte hardwareConfig = COMMON_CATHODE;
 
 unsigned long int time;
 
@@ -55,7 +56,7 @@ int i;
 int number;
 
 void setup() {
-  Serial.begin(9600);
+ 
 
   for (i = 0; i < 5; i++) {
     row[i] = -1;
@@ -171,12 +172,12 @@ void loop() {
     get_time = false;
   }
 
-  if (next < Floor) up = true;
+  if (next > Floor) up = true;
   else up = false;
 
   number = Floor;
-  sevseg.setNumber(number, 0);
-  for (i = 0; i < 50; i++) {
-    sevseg.refreshDisplay();
+  sevseg.setNumber(number);
+  for(i = 0;i < 50;i++){
+  sevseg.refreshDisplay();
   }
 }
