@@ -6,6 +6,7 @@ void sort(int num){
       Put = true;
     }
   }
+  bubbleSort();
 }
 
 void bubbleSort()
