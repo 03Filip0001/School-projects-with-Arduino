@@ -8,6 +8,25 @@ void sort(int num){
   }
 }
 
+void bubbleSort()
+{
+  int j = 5, k;
+
+  while(j > 1)
+  {
+    for(k = 0; k < j - 1;k++)
+    {
+      if(row[k] < row[k + 1]) // 1 3
+      {
+        int pom = row[k]; // 1 3
+        row[k] = row[k + 1]; // 3 3
+        row[k + 1] = pom; // 3 1
+      }
+    }
+    j--;
+  }
+}
+
 void Move(){
   row[0] = row[1];
   row[1] = row[2];
