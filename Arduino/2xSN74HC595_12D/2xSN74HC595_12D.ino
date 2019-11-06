@@ -1,9 +1,9 @@
 #include <HC595.h>
 
 const int chipCount = 2;
-const int clockPin = 3;
-const int latchPin = 2;
-const int dataPin = 4;
+const int clockPin = 15;
+const int latchPin = 16;
+const int dataPin = 17;
 
 HC595 ledArray(chipCount, latchPin, clockPin, dataPin);
 
@@ -11,7 +11,6 @@ int lastPin = ledArray.lastPin() - 4;
 
 void setup() {
   ledArray.reset();
-
 }
 
 void loop() {

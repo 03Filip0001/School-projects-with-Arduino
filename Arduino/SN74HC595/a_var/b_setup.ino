@@ -1,11 +1,11 @@
 void setup() {
-  pinMode(BTN_1 ,INPUT_PULLUP);
+/*  pinMode(BTN_1 ,INPUT_PULLUP);
   btn1.attach(BTN_1);
   btn1.interval(5);
   
   pinMode(BTN_2 ,INPUT_PULLUP);
   btn2.attach(BTN_2);
-  btn2.interval(5);
+  btn2.interval(5);*/
   
   pinMode(lock_pin, OUTPUT);
   pinMode(data_pin, OUTPUT);  

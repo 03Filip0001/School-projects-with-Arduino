@@ -1,11 +1,11 @@
 #include "Bounce2.h"
 
-#define BTN_1 2
-#define BTN_2 3
+//#define BTN_1 2
+//#define BTN_2 3
 
-#define clock_pin 4
-#define data_pin 5
-#define lock_pin 6
+#define clock_pin 3
+#define data_pin 4
+#define lock_pin 2
 
 #define DIS_1 7
 #define DIS_2 8

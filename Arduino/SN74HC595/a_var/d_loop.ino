@@ -11,6 +11,8 @@ void loop() {
     value2 = !value2;
   }
 
+  number == 110;
+
   if(value1)
   {
     if(value2)

@@ -15,8 +15,8 @@ int LEDS[] = {LED1, LED2, LED3, LED4, LED5};
 #define BTN_2 10
 #define BTN_3 11
 #define BTN_4 12
-#define BTN_5 0
-#define BTN_6 15
+#define BTN_5 15
+#define BTN_6 16
 
 Bounce btn1 = Bounce();
 Bounce btn2 = Bounce();
@@ -85,9 +85,9 @@ void setup() {
 
 void loop() {
   btn6.update();
-  
+
   if (btn6.fell()) {
-    if(!reset) reset = true;
+    if (!reset) reset = true;
     else reset = false;
   }
 

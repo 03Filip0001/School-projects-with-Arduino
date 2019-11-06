@@ -3,10 +3,10 @@
 
 #include <Bounce2.h>
 
-#define CLK 2
-#define DIO 3
+#define CLK 0
+#define DIO 1
 
-#define BTN 4
+#define BTN 9
 
 unsigned long int time, time1;
 
@@ -24,14 +24,16 @@ DS3231 rtc(SDA, SCL);
 Bounce btn = Bounce();
 
 void setup() {
-  tm1637.setBrightness(5);
   tm1637.init();
-  Serial.begin(9600);
+  tm1637.setBrightness(5);
   rtc.begin();
 
-  //rtc.setDOW(SUNDAY);     // Set Day-of-Week to SUNDAY
-  //rtc.setTime(14, 53, 20);     // Set the time to 12:00:00 (24hr format)
-  //rtc.setDate(27, 10, 2019);   // Set the date to January 1st, 2014
+  //rtc.setDOW(FRIDAY);     // Set Day-of-Week to SUNDAY
+  //rtc.setTime(15, 19, 0);     // Set the time to 12:00:00 (24hr format)
+  //rtc.setDate(1, 11, 2019);   // Set the date to January 1st, 2014
+
+  pinMode(CLK, OUTPUT);
+  pinMode(DIO, OUTPUT);
 
   pinMode(BTN, INPUT_PULLUP);
 
@@ -56,7 +58,7 @@ void loop() {
 
   //Serial.print("  ");
 
-  Serial.println(rtc.getDateStr());
+  //Serial.println(rtc.getDateStr());
 
   if (clock) {
     num = rtc.getTimeStr();
