@@ -29,11 +29,11 @@ unsigned long int time;
 
 int Floor = 0;
 int travel = 2000;
-int next;
+int next = 0;
 
 bool clicked[5];
 bool Put = false;
-int row[5];
+int row[6];
 
 bool up = true;
 bool get_time = false;
@@ -45,9 +45,11 @@ int number;
 bool reset = false;
 
 void setup() {
-  for (i = 0; i < 5; i++) {
+  row[0] = 0;
+  for (i = 1; i < 6; i++) {
     row[i] = -1;
   }
+  next = row[0];
 
   pinMode(LED1, OUTPUT);
   pinMode(LED2, OUTPUT);
@@ -124,41 +126,58 @@ void loop() {
     }
 
     ledsOn();
-    next = row[0];
+    if (clicked[0] || clicked[1] || clicked[2] || clicked[3] || clicked[4])
+    {
+      if (!get_time) {
+        time = millis();
+        get_time = true;
+      }
+    }
 
-    if (next != -1) {
-      if (up) {
-        if (clicked[0] || clicked[1] || clicked[2] || clicked[3] || clicked[4]) {
-          if (!get_time) {
-            time = millis();
-            get_time = true;
-          }
-        }
-        if (millis() - time > travel) {
-          Floor++;
-          time = millis();
-          if (Floor == next) {
-            clicked[Floor] = false;
-            Move();
+    if (up && Floor != next) {
+      if (millis() - time > travel) {
+        Floor++;
+        time = millis();
+        if (Floor == next) {
+          clicked[Floor] = false;
+          Move();
+          if (row[1] < Floor) next = row[1];
+          else
+          {
             next = row[0];
+            for(i = 2; i < 6;i++)
+            {
+              if(Floor > row[i])
+                next = row[i];
+                row[i] = -1;
+                bubbleSort();
+                up = false;
+                break;
+            }
           }
         }
       }
+    }
 
-      if (!up) {
-        if (clicked[0] || clicked[1] || clicked[2] || clicked[3] || clicked[4]) {
-          if (!get_time) {
-            time = millis();
-            get_time = true;
-          }
-        }
-        if (millis() - time > travel) {
-          Floor--;
-          time = millis();
-          if (Floor == next) {
-            clicked[Floor] = false;
-            Move();
+    if (!up && Floor != next) {
+      if (millis() - time > travel) {
+        Floor--;
+        time = millis();
+        if (Floor == next) {
+          clicked[Floor] = false;
+          Move();
+          if(row[1] < Floor) next = row[1];
+          else
+          {
             next = row[0];
+            for(i = 2; i < 6;i++)
+            {
+              if(Floor > row[i])
+                next = row[i];
+                row[i] = -1;
+                bubbleSort();
+                break;
+            }
           }
         }
       }
@@ -168,19 +187,18 @@ void loop() {
       get_time = false;
     }
 
-    if (next > Floor) up = true;
-    else up = false;
+    if(Floor == 0) up = true;
 
     number = Floor;
     CD4511.showNumber(number);
   }
   else
   {
-    for (i = 0; i < 5; i++) {
-      row[i] = -1;
-      clicked[i] = false;
+    for (i = 0; i < 6; i++) {
+      if(i != 0)row[i] = -1;
+      if(i != 5)clicked[i] = false;
       Floor = 0;
-      next = -1;
+      next = row[0];
       up = true;
       get_time = false;
     }
