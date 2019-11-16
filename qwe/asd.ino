@@ -7,6 +7,7 @@ void sort(int num) {
       break;
     }
   }
+  bubbleSort();
 }
 void Move() {
   row[0] = row[1];
@@ -23,6 +24,27 @@ void ledsOn(){
     }
     else if(!clicked[i]){
       digitalWrite(LEDS[i], LOW);
+    }
+  }
+}
+
+void bubbleSort()
+{
+  int k;
+  bool zameni = true;
+
+  while(zameni)
+  {
+    zameni = false;
+    for(k = 0; k < 4;k++)
+    {
+      if(row[k] < row[k + 1]) // 1 3
+      {
+        int pom = row[k]; // 1 3
+        row[k] = row[k + 1]; // 3 3
+        row[k + 1] = pom; // 3 1
+        zameni = true;
+      }
     }
   }
 }
