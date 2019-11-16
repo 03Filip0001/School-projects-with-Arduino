@@ -18,6 +18,8 @@ int LEDS[] = {LED1, LED2, LED3, LED4, LED5};
 #define BTN_5 15
 #define BTN_6 16
 
+#define DIS 17
+
 Bounce btn1 = Bounce();
 Bounce btn2 = Bounce();
 Bounce btn3 = Bounce();
@@ -39,6 +41,8 @@ bool get_time = false;
 int i;
 int number;
 
+bool reset = false;
+
 void setup() {
 
   Serial.begin(9600);
@@ -57,6 +61,9 @@ void setup() {
   pinMode(BTN_3, INPUT_PULLUP);
   pinMode(BTN_4, INPUT_PULLUP);
   pinMode(BTN_5, INPUT_PULLUP);
+  pinMode(BTN_6, INPUT_PULLUP);
+
+  pinMode(DIS, OUTPUT);
 
   btn1.attach(BTN_1);
   btn1.interval(5);
@@ -73,9 +80,33 @@ void setup() {
   btn5.attach(BTN_5);
   btn5.interval(5);
 
+  btn6.attach(BTN_6);
+  btn6.interval(5);
+
   time = millis();
 }
 void loop() {
+  btn6.update();
+
+  if (btn6.fell()) {
+    if(!reset) reset = true;
+    else reset = false;
+  }
+
+
+  if(reset){
+    for (i = 0; i < 5; i++) {
+      row[i] = -1;
+      clicked[i] = false;
+    }
+    digitalWrite(DIS, LOW);
+    Floor = 0;
+    next = -1;
+    up = true;
+    get_time = false;
+    return;
+  }
+  digitalWrite(DIS, HIGH);
   btn1.update();
   btn2.update();
   btn3.update();
