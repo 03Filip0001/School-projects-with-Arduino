@@ -203,6 +203,7 @@ void loop() {
 
   if (!clicked[0] && !clicked[1] && !clicked[2] && !clicked[3] && !clicked[4]) {
     get_time = false;
+    reachMax = false;
   }
 
   number = Floor;
