@@ -17,6 +17,15 @@ void Move() {
   row[4] = -1;
 }
 
+void Move(int num)
+{
+  for(int j = num; j < 4;j++)
+  {
+    row[j] = row[j + 1];
+  }
+  row[4] = -1;
+}
+
 void ledsOn(){
   for(i = 0; i< 5;i++){
     if(clicked[i]){

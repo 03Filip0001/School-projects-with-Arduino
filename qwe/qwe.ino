@@ -34,18 +34,24 @@ int travel = 2000;
 int next = -1;
 
 bool clicked[5];
+
 bool Put = false;
+
 int row[5];
+
 bool up = true;
+
 bool get_time = false;
+
 int i;
+
 int number;
 
 bool reset = false;
 
-void setup() {
+bool reachMax = false;
 
-  Serial.begin(9600);
+void setup() {
   for (i = 0; i < 5; i++) {
     row[i] = -1;
   }
@@ -89,12 +95,12 @@ void loop() {
   btn6.update();
 
   if (btn6.fell()) {
-    if(!reset) reset = true;
+    if (!reset) reset = true;
     else reset = false;
   }
 
 
-  if(reset){
+  if (reset) {
     for (i = 0; i < 5; i++) {
       row[i] = -1;
       clicked[i] = false;
@@ -104,6 +110,7 @@ void loop() {
     next = -1;
     up = true;
     get_time = false;
+    reachMax = false;
     return;
   }
   digitalWrite(DIS, HIGH);
@@ -133,12 +140,12 @@ void loop() {
     clicked[4] = true;
     sort(4);
   }
-  
+
   ledsOn();
-  next = row[0];
+  if (reachMax == false) next = row[0];
 
   if (next != -1) {
-    if (next > Floor) up = true;
+    if (next > Floor && reachMax == false) up = true;
     else up = false;
     if (up) {
       if (clicked[0] || clicked[1] || clicked[2] || clicked[3] || clicked[4]) {
@@ -148,13 +155,14 @@ void loop() {
         }
       }
       if (millis() - time > travel) {
-        
+
         Floor++;
         time = millis();
         if (Floor == next) {
           clicked[Floor] = false;
           Move();
           next = row[0];
+          reachMax = true;
         }
       }
     }
@@ -170,8 +178,23 @@ void loop() {
         time = millis();
         if (Floor == next) {
           clicked[Floor] = false;
-          Move();
-          next = row[0];
+          next = -1;
+          for (i = 0; i < 5; i++)
+          {
+            if (row [i] == Floor) {
+              Move(i);
+              
+            }
+            if (row[i] < Floor)
+            {
+              next = row[i];
+              break;
+            }
+          }
+          if (next == -1)
+          {
+            reachMax = false;
+          }
         }
       }
     }
@@ -183,5 +206,5 @@ void loop() {
   }
 
   number = Floor;
-    CD4511.showNumber(number);
+  CD4511.showNumber(number);
 }
