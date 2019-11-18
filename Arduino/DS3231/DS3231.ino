@@ -3,8 +3,8 @@
 
 #include <Bounce2.h>
 
-#define CLK 0
-#define DIO 1
+#define CLK 3
+#define DIO 2
 
 #define BTN 9
 

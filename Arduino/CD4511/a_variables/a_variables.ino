@@ -2,9 +2,9 @@
 #define B 3
 #define C 4
 #define D 5
-#define DIS_1 6
-#define DIS_2 9
-#define DIS_3 10
+#define DIS_1 10
+#define DIS_2 11
+#define DIS_3 12
 
 int bin_numbers[10][4] = 
 {
